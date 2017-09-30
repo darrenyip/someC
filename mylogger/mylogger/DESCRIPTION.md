@@ -50,6 +50,16 @@ Note that the lines containing **#SERVER** and **#CLIENT** are discarded.
 ```
 mylogger [logfilesCollectionPath]
 ```
+---
+- The **optional** command line argument **_logfilesCollectionPath_** is the path to a directory containing a collection of log files that **mylogger** program can operate on.
+- If no argument is given, **mylogger** program will operate on the current working directory.
+- The output of the program will be named **combinedlogs.log**
+- If **combinedlogs.log** already exists in the **_logfilesCollectionPath_** directory, the program will **overwrite** the contents of that file.
 
-- The **optional** command line argument **_logfilesCollectionPath_** is the path to a directory containing a collection of log files that mylogger program can operate on.
-- If no argument is given, mylogger program will operate on the current working directory.
+:ok_hand:
+---
+>In order to operate on several log files:
+
+- The program first concatenate all the log files into a single file, and then read the result of this concatenation.
+- Assume that the format of all log files to be provided to the program is the same (i.e., each log starts with a line `#<name of program>`,  Each entry will follows the format `<level>,<date>,<message>`, and the timestamp format is `YYYY-MM-DD HH:MM:SS`).
+- The program used linkedList data structure.
