@@ -1,13 +1,13 @@
 /*
 * The linked list struct which will be used in functions
 */
-struct logline {
+typedef struct logline {
   char level[20];
   char timestamp[20];
   char message[100];
-} logline_t;
+} logline;
 
 typedef struct loglist {
-  logline_t line;
+  logline line;
   struct loglist *next;
-} loglist_t;
+} loglist;

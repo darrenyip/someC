@@ -8,7 +8,11 @@
 * Merge sorted linked list inlist into resultlist
 * and return a pointer to the head of the combined list.
 */
-loglist* mergeLists(loglist* resultlist, loglist* inlist){
+
+#include <string.h>
+#include "prototypeA.h"
+
+loglist* mergeLists(loglist* resultlist, loglist* inlist) {
 
 }
 
@@ -16,6 +20,6 @@ loglist* mergeLists(loglist* resultlist, loglist* inlist){
 * Sort the provided linked list inlist
 * and return a pointer to the head of the sorted list.
 */
-loglist* sortList(loglist* inlist){
-
+loglist* sortList(loglist* inlist) {
+    
 }

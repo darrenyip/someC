@@ -5,18 +5,25 @@
 * 3. print out the list to the console
 */
 
+#include <string.h>
+#include "prototypeA.h"
+
+/* string line will not work in here */
 /*
 * To construct a logline with 3 fields
 * based on the input string.
 * This function allocates memory.
 */
-logline* parseLine(string line) {
+logline* parseLine(char *line) {
+    
 }
 
 /* Free all memory allocated for the list. */
 void deleteList(loglist* l) {
+    
 }
 
 /* Print all the lines contained in the list. */
-void printLines(LineList* l) {
+void printLines(loglist* l) {
+    
 }
