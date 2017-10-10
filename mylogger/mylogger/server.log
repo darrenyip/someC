@@ -1,0 +1,8 @@
+#SERVER
+DEBUG,2011-10-21 14:32:00,server starting
+DEBUG,2011-10-21 14:32:01,server started
+WARN,2011-10-21 14:32:10,client connected
+DEBUG,2011-10-21 14:32:15,received string
+INFO,2011-10-21 14:32:18,sent result
+ERROR,2011-10-21 14:32:19,error sending
+DEBUG,2011-10-21 14:32:22,client disconnected

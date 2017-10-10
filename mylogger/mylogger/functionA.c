@@ -82,7 +82,7 @@ void printLines(loglist* l) {
     printf("The list is empty.\n");
     }
     else {
-        printf("Values in the list are : \n");
+        printf("Logs list : \n");
         while (l != NULL) {
             printf("%s %s %s\n", l->line.level, l->line.timestamp, l->line.message);
             l = l->next;

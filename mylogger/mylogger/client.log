@@ -1,0 +1,5 @@
+#CLIENT
+WARN,2011-10-21 14:32:09,session started
+INFO,2011-10-21 14:32:14,calling server
+ERROR,2011-10-21 14:32:20,error while calling
+DEBUG,2011-10-21 14:32:21,disconnecting

@@ -13,41 +13,33 @@
 #include <stdlib.h>
 #include "prototypeB.h"
 
-loglist* mergeLists(loglist* resultlist, loglist* inlist) {
-    /*
-    loglist* ph = resultlist;
-    while(ph->next != NULL){
-      ph = ph->next;
-    }
-    ph->next = inlist->head;
-    */
-}
-
 /*
 * Sort the provided linked list inlist
 * and return a pointer to the head of the sorted list.
 */
-loglist* sortList(loglist* inlist) {
-
-  /*
-  loglist* templist;
-  char tlevel, ttimestamp, tmessage;
-  while(inlist->next != NULL){
-  templist = inlist->next;
-    while(templist !=NULL){
-      if(inlist->timestamp < templist->timestamp){
-        tlevel = resultlist->level;
-        ttimestamp = resultlist->timestamp;
-        tmessage = resultlist->message;
-        resultlist->level = templist->level;
-        resultlist->timestamp = templist->timestamp;
-        resultlist->message = templist->message;
-        templist->level = tlevel;
-        templist->timestamp = ttimestamp;
-        templist->message = tmessage;
-      }
-    }
-  }
-  return resultlist;
-  */
+void swap(loglist *p1, loglist *p2)
+{
+	logline temp = p1->line;
+	p1->line = p2->line;
+	p2->line = temp;
 }
+
+loglist* sortList(loglist* inlist) {
+  loglist *head = inlist;
+  loglist *traverse;
+  loglist *min;
+  
+  while(head->next) {
+    min = head;
+    traverse = head->next;
+    while(traverse) {
+      if (min->line.timestamp > traverse->line.timestamp) {
+        min = traverse;
+      }
+      traverse = traverse->next;
+    }
+    swap(head, min);
+    head = head->next;
+  }
+}
+

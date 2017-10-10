@@ -65,16 +65,14 @@ int main(int argc, char **argv) {
   /* This might be too complicated and not efficient */
   int maxLogFiles = 16;
   char **logfiles = malloc(maxLogFiles * sizeof(char *));
+  char filetoOpen[maxLogFiles][20];
   
   int fileCount = 0;
-
   while((entry = readdir(dp)))
     if (has_log_extension(entry->d_name)) {
-      // strcat(logfiles[fileCount], entry->d_name);
-      logfiles[fileCount] = entry->d_name;
+      strcpy(filetoOpen[fileCount], entry->d_name);
       if(fileCount == maxLogFiles -1) {
         maxLogFiles *= 2;
-        logfiles = realloc(logfiles, 16 * sizeof(char *));
       }
       fileCount++;
     }
@@ -87,39 +85,24 @@ int main(int argc, char **argv) {
   FILE *f;
 
   /* for loop does not work in here */  
-  
-  /* This chunk of code does not work yet since 
-   * fopen (logfiles[k], "r") will not work.
-  */
-  
   for(k = 0; k < fileCount; k++) {
+
+    f = fopen (filetoOpen[k], "r");
     
-    /* Still stock in open multiple files. */
-    /* Might ask stackoverflow later. */
+    if(f == NULL) {
+      printf("\n ????wtf \n");
+    }
     
-    char openThisShit[20];
-    // strcpy(openThisShit, logfiles[k]);
-    // printf("%s \n", logfiles[k]);
-    // printf("%s \n", openThisShit);
-    // strcpy(openThisShit, "server.log");
-    
-    
-    // f = fopen (openThisShit, "r");
-    
-    // if(f == NULL) {
-    //   printf("\n ????wtf \n");
-    // }
-    
-    // if (f) {
-    //   fseek (f, 0, SEEK_END);
-    //   length = ftell (f);
-    //   fseek (f, 0, SEEK_SET);
-    //   buffer = malloc (length);
-    //   if (buffer) {
-    //     fread (buffer, 1, length, f);
-    //   }
-    //   fclose (f);
-    // }
+    if (f) {
+      fseek (f, 0, SEEK_END);
+      length = ftell (f);
+      fseek (f, 0, SEEK_SET);
+      buffer = malloc (length);
+      if (buffer) {
+        fread (buffer, 1, length, f);
+      }
+      fclose (f);
+    }
     
     if (buffer) {
       /* If the log file is not start with #, skip this log file */
@@ -134,11 +117,9 @@ int main(int argc, char **argv) {
         if (nextLine) *nextLine = '\0';  // temporarily terminate the current line
         i = parseLine(curLine);
         if(i != 0) {
-          // printf("deref: %s %s %s \n", i->level, i->timestamp, i->message);
           strcpy(j.level,  i->level);
           strcpy(j.timestamp,  i->timestamp);
           strcpy(j.message,  i->message);
-          // printf("REF: %s %s %s \n", j.level, j.timestamp, j.message);
           insert_node(&head, &tail, j);
         }
         if (nextLine) *nextLine = '\n';  // then restore newline-char, just to be tidy    
@@ -147,5 +128,13 @@ int main(int argc, char **argv) {
     }
     printLines(head);
   }
+  
+  sortList(head);
+  
+  
+  printf("Sorted list: \n");
+  printLines(head);
+  
+  
   return 0;
 }
