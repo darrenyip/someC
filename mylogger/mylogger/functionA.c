@@ -54,7 +54,6 @@ logline* parseLine(char *line) {
     
     /* Walk through other commas */
     while(token != NULL) {
-      // printf("%s\n", token);
       strcpy(subLine[subLineIndex++], token);
       token = strtok(NULL, takeMyComma);
     }
@@ -82,10 +81,40 @@ void printLines(loglist* l) {
     printf("The list is empty.\n");
     }
     else {
-        printf("Logs list : \n");
+        // printf("Logs list : \n");
         while (l != NULL) {
             printf("%s %s %s\n", l->line.level, l->line.timestamp, l->line.message);
             l = l->next;
         }
+    }
+}/* End of print */
+
+
+/* Print all the lines contained in the list. */
+void writeToFile(loglist* l) {
+    FILE *sortedLogs;
+    
+    if (l == NULL) {
+    printf("The list is empty.\n");
+    }
+    else {
+        printf("\n Writing...\n");
+        /* Create the file to write */
+        if((sortedLogs = fopen("combinedlogs.log", "w")) == NULL) {
+            fprintf(stderr, "Could not open file: combinedlogs.log \n");
+            exit(1);
+        }
+        
+        /* Write data */
+        while(l != NULL) {
+            fprintf(sortedLogs, "%s %s %s\n", l->line.level, l->line.timestamp, l->line.message);
+            l = l->next;
+        }
+        
+        /* Close file */
+        if(fclose(sortedLogs) == EOF) {
+            fprintf(stderr, "Could not close file: combinedlogs.log \n");
+        }
+        printf("\n Done! \n");
     }
 }/* End of print */

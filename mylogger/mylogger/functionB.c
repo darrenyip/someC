@@ -1,22 +1,11 @@
 /*
-* This class implemented 2 methods
-* 1. Merge the lists
-* 2. sort the lists
-*/
-
-/*
-* Merge sorted linked list inlist into resultlist
-* and return a pointer to the head of the combined list.
-*/
+ * This class implemented sort the lists.
+ */
 
 #include <string.h>
 #include <stdlib.h>
 #include "prototypeB.h"
 
-/*
-* Sort the provided linked list inlist
-* and return a pointer to the head of the sorted list.
-*/
 void swap(loglist *p1, loglist *p2)
 {
 	logline temp = p1->line;
@@ -25,6 +14,7 @@ void swap(loglist *p1, loglist *p2)
 }
 
 loglist* sortList(loglist* inlist) {
+  
   loglist *head = inlist;
   loglist *traverse;
   loglist *min;
@@ -33,7 +23,7 @@ loglist* sortList(loglist* inlist) {
     min = head;
     traverse = head->next;
     while(traverse) {
-      if (min->line.timestamp > traverse->line.timestamp) {
+      if (strcmp(min->line.timestamp, traverse->line.timestamp) > 0) {
         min = traverse;
       }
       traverse = traverse->next;

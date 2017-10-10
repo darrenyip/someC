@@ -30,7 +30,6 @@ int main(int argc, char **argv) {
   /* Get current working directory */
   if (argc == 1) {
     if (getcwd(cwd, sizeof(cwd)) != NULL) {
-      // fprintf(stdout, "current working dir: %s\n", cwd);
       pathName = cwd;
     } else {
       perror("getcwd() error");
@@ -62,7 +61,6 @@ int main(int argc, char **argv) {
   }
   
   /* Save filenames into a string array */
-  /* This might be too complicated and not efficient */
   int maxLogFiles = 16;
   char **logfiles = malloc(maxLogFiles * sizeof(char *));
   char filetoOpen[maxLogFiles][20];
@@ -71,6 +69,7 @@ int main(int argc, char **argv) {
   while((entry = readdir(dp)))
     if (has_log_extension(entry->d_name)) {
       strcpy(filetoOpen[fileCount], entry->d_name);
+      
       if(fileCount == maxLogFiles -1) {
         maxLogFiles *= 2;
       }
@@ -84,13 +83,12 @@ int main(int argc, char **argv) {
   long length;
   FILE *f;
 
-  /* for loop does not work in here */  
   for(k = 0; k < fileCount; k++) {
 
     f = fopen (filetoOpen[k], "r");
     
     if(f == NULL) {
-      printf("\n ????wtf \n");
+      printf("\n Unable to open %s \n", filetoOpen[k]);
     }
     
     if (f) {
@@ -108,13 +106,14 @@ int main(int argc, char **argv) {
       /* If the log file is not start with #, skip this log file */
       if(buffer[0] != '#') {
           printf("\nlogfile %s is not start with #. Skipped...\n", logfiles[0]);
+          break;
       }
   
      char * curLine = buffer;
      while(curLine)
      {
         char * nextLine = strchr(curLine, '\n');
-        if (nextLine) *nextLine = '\0';  // temporarily terminate the current line
+        if (nextLine) *nextLine = '\0';  /* Temporarily terminate the current line */
         i = parseLine(curLine);
         if(i != 0) {
           strcpy(j.level,  i->level);
@@ -122,18 +121,18 @@ int main(int argc, char **argv) {
           strcpy(j.message,  i->message);
           insert_node(&head, &tail, j);
         }
-        if (nextLine) *nextLine = '\n';  // then restore newline-char, just to be tidy    
+        if (nextLine) *nextLine = '\n';  /* Then restore newline-char, just to be tidy */ 
         curLine = nextLine ? (nextLine+1) : NULL;
      }
     }
-    printLines(head);
   }
   
   sortList(head);
   
   
-  printf("Sorted list: \n");
+  printf("\n --Sorted list: \n");
   printLines(head);
+  writeToFile(head);
   
   
   return 0;

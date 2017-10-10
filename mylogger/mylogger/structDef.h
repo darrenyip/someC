@@ -1,6 +1,6 @@
 /*
-* The linked list struct which will be used in functions
-*/
+ * The linked list struct which will be used in functions
+ */
 typedef struct logline {
   char level[20];
   char timestamp[20];
