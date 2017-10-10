@@ -62,18 +62,19 @@ int main(int argc, char **argv) {
   
   /* Save filenames into a string array */
   int maxLogFiles = 16;
-  char **logfiles = malloc(maxLogFiles * sizeof(char *));
   char filetoOpen[maxLogFiles][20];
   
   int fileCount = 0;
   while((entry = readdir(dp)))
     if (has_log_extension(entry->d_name)) {
-      strcpy(filetoOpen[fileCount], entry->d_name);
-      
-      if(fileCount == maxLogFiles -1) {
-        maxLogFiles *= 2;
+      /* Avoid open combinedlogs.log file*/
+      if(strcmp(entry->d_name, "combinedlogs.log") != 0){
+        strcpy(filetoOpen[fileCount], entry->d_name);
+        fileCount++;
+        if(fileCount == maxLogFiles -1) {
+          maxLogFiles *= 2;
+        }
       }
-      fileCount++;
     }
   closedir(dp);
   
@@ -103,27 +104,26 @@ int main(int argc, char **argv) {
     }
     
     if (buffer) {
-      /* If the log file is not start with #, skip this log file */
-      if(buffer[0] != '#') {
-          printf("\nlogfile %s is not start with #. Skipped...\n", logfiles[0]);
-          break;
+      /* Make sure only work in files start with # */
+      if(buffer[0] == '#') {
+        char * curLine = buffer;
+        while(curLine)
+        {
+          char * nextLine = strchr(curLine, '\n');
+          if (nextLine) *nextLine = '\0';  /* Temporarily terminate the current line */
+          i = parseLine(curLine);
+          if(i != 0) {
+            strcpy(j.level,  i->level);
+            strcpy(j.timestamp,  i->timestamp);
+            strcpy(j.message,  i->message);
+            insert_node(&head, &tail, j);
+          }
+          if (nextLine) *nextLine = '\n';  /* Then restore newline-char, just to be tidy */ 
+          curLine = nextLine ? (nextLine+1) : NULL;
+        }
       }
   
-     char * curLine = buffer;
-     while(curLine)
-     {
-        char * nextLine = strchr(curLine, '\n');
-        if (nextLine) *nextLine = '\0';  /* Temporarily terminate the current line */
-        i = parseLine(curLine);
-        if(i != 0) {
-          strcpy(j.level,  i->level);
-          strcpy(j.timestamp,  i->timestamp);
-          strcpy(j.message,  i->message);
-          insert_node(&head, &tail, j);
-        }
-        if (nextLine) *nextLine = '\n';  /* Then restore newline-char, just to be tidy */ 
-        curLine = nextLine ? (nextLine+1) : NULL;
-     }
+     
     }
   }
   
