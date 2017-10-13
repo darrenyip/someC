@@ -2,7 +2,86 @@
 #include <stdlib.h>
 #include <time.h>
 
-/* axpy */
+#define SYS_CLOCK_SPEED 2400000000
+
+/* BenchMark Core */
+int benchmark(void) {
+    int N;       /* The size of array, controlled by user input */
+    int i;      /* Index of the array */
+    int a = rand() % 20; /* Scale number to multiply X Array */
+    int loopCount = 0; /* Count computation loops */
+
+    printf("Enter the size of the Array (Maximum 1,000,000)\n");
+    if (scanf("%d", &N) != 1) {
+        fprintf(stderr, "Input error!\n");
+        return 0;
+    }
+    
+    /* Error handle if user input is too large */
+    if (N > 1000000) {
+        fprintf(stderr, "Array size is too large!\n");
+        return 0;
+    }
+
+    /* Initialize and fill the Array X and Y */
+    int *arrayX = malloc(N * sizeof(int));
+    int *arrayY = malloc(N * sizeof(int));
+    int *resultArray = malloc(N * sizeof(int));
+    
+    /* Error handle if malloc fail */
+    if (arrayX == NULL || arrayY == NULL || resultArray == NULL) {
+        fprintf(stderr, "Memory allocation failed!\n");
+        free(arrayX);
+        free(arrayY);
+        free(resultArray);
+        return 0;
+    }
+
+    /* Initialize two arrays with random numbers filled in */
+    for (i = 0; i < N; i++) {
+        arrayX[i] = rand () % 20;
+        arrayY[i] = rand () % 30;
+    }
+
+    /* AXPY Computation */
+    /* Compute time for total loop */
+    clock_t timetotal = clock();
+    for (i = 0; i < N; i++) {
+        resultArray[i] = a * arrayX[i] + arrayY[i];
+        loopCount++;
+    }
+    timetotal = clock() - timetotal;
+    
+    /* Convert total time to milliseconds */
+    double timeTaken = ((double)timetotal) / CLOCKS_PER_SEC;
+    
+    /* Computation time per AXPY */
+    double timePerAxpy = timeTaken / loopCount;
+    
+    /* Computation time per vector */
+    /* There are 2 arithmetic operations per axpy computation */
+    double timePerVec = timePerAxpy / 2;
+    
+    /* Compute machine cycles per arithmetic operation */
+    long int numberOfCycle = timePerVec * SYS_CLOCK_SPEED;
+    
+    /* Print out result to screen */
+    
+    printf("\n -> 1) Vector length : %d", N);
+    printf("\n -> 2) Number of computing loops: %d", loopCount);
+    printf("\n -> 3) Total computation time : %f seconds", timeTaken);
+    printf("\n -> 4) Time per axpy vector : %f milliseconds", timePerAxpy * 1000);
+    printf("\n -> 5) Time per vector element : %f milliseconds", timePerVec * 1000);
+    printf("\n -> 6) The number of machine cycles per arithmetic operation : %ld", numberOfCycle);
+    
+    /* Refresh memory */
+    free(arrayX);
+    free(arrayY);
+    free(resultArray);
+    return 0;
+}
+
+/* Cool AXPY computation benchmark menu*/
 int menu(void) {
     int choice;
     do {
@@ -27,86 +106,9 @@ int menu(void) {
     return 0;
 }
 
-int benchmark(void) {
-    int N;       /* The matrix size, controlled by user input */
-    int r, c;    /* Row and Column number */
-    int randomX, randomY;  /* Random numbers to fill the matrces */
-    int a = rand() % 20; /* Scale number to multiply x matrix */
-    int loopCount = 0; /* Count computation loops */
-
-    printf("Enter the size(N * N) of the matrices (Maximum 1,000,000)\n");
-    if (scanf("%d", &N) != 1) {
-        fprintf(stderr, "Input error!\n");
-        return 0;
-    }
-
-    if (N > 1000000) {
-        fprintf(stderr, "Matrix size is too large!\n");
-        return 0;
-    }
-
-    /* Initialize and fill the matrix x and y */
-    int (*xMatrix)[N] = malloc(N * sizeof(*xMatrix));
-    int (*yMatrix)[N] = malloc(N * sizeof(*yMatrix));
-    int (*resultMatrix)[N] = malloc(N * sizeof(*resultMatrix));
-
-    if (xMatrix == NULL || yMatrix == NULL || resultMatrix == NULL) {
-        fprintf(stderr, "Memory allocation failed!\n");
-        free(xMatrix);
-        free(yMatrix);
-        free(resultMatrix);
-        return 0;
-    }
-
-    
-    /* Initialize two matrices with random numbers filled in */
-    for (r = 0; r < N; r++) {
-        for (c = 0; c < N; c++) {
-            randomX = rand() % 20;
-            randomY = rand() % 20;
-            xMatrix[r][c] = randomX;
-            yMatrix[r][c] = randomY;
-        }
-    }
-
-    /* AXPY Computation */
-    /* Compute time for total loop */
-    clock_t timetotal = clock();
-    
-    for (r = 0; r < N; r++) {
-        for (c = 0; c < N; c++) {
-            resultMatrix[r][c] = a * xMatrix[r][c] + yMatrix[r][c];
-            loopCount++;
-        }
-    }
-    
-    timetotal = clock() - timetotal;
-
-    double timeTaken = ((double)timetotal) / CLOCKS_PER_SEC;
-    
-    /* Computation time per AXPY */
-    double timePerAxpy = timeTaken / ((long long)N * N);
-    
-    /* Computation time per vector */
-    double timePerVec = timeTaken / loopCount;
-    
-    printf("\n -> 2) Vector length : %lld", (long long)N * N);
-    printf("\n -> 3) Number of computing loops: %d", loopCount);
-    printf("\n -> 4) Total computation time : %f seconds", timeTaken);
-    printf("\n -> 5) Time per axpy vector : %f seconds", timePerAxpy);
-    printf("\n -> 6) Time per vector element : %f seconds", timePerVec);
-    printf("\n -> 7) ");
-    
-    free(xMatrix);
-    free(yMatrix);
-    free(resultMatrix);
-    return 0;
-}
-
+/* Program start in here */
 int main()
 {
-    time_t t;
-    srand((unsigned) time(&t));
     menu();
     benchmark();
  
