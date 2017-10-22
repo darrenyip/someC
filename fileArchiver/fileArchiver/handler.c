@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "handler.h"
+#include "constants.h"
 
 void list(char *archivedFileName){
     
@@ -10,9 +11,9 @@ void list(char *archivedFileName){
     int i;
     int numberOfFiles;
     char fileNameLength;
-    char fileNameBuffer[100];
+    char fileNameBuffer[MAXFILENAME];
     int record;
-    unsigned char buffer[1000];
+    unsigned char buffer[BUFFERSIZE];
     
     int fileSize;
     
@@ -34,7 +35,7 @@ void list(char *archivedFileName){
         fread(&fileSize, sizeof(int), 1, ifp);
         printf("File#[%d] : %s, %d bytes.\n", i + 1, fileNameBuffer, fileSize);
         
-        while ((record = fread(buffer, sizeof(unsigned char), 1000 < fileSize ? 1000 : fileSize, ifp)) != 0) {
+        while ((record = fread(buffer, sizeof(unsigned char), BUFFERSIZE < fileSize ? BUFFERSIZE : fileSize, ifp)) != 0) {
             fileSize -= record;
             if(fileSize == 0) {
                 break;
@@ -51,10 +52,10 @@ int insideChecking(char** fileNames, int numFiles, char* archiveName) {
     int i, j;
     int fileSize;
     char fileNameLength;
-    char fileNameBuffer[100];
+    char fileNameBuffer[MAXFILENAME];
     int record1, record2;
-    unsigned char buffer1[1000];
-    unsigned char buffer2[1000];
+    unsigned char buffer1[BUFFERSIZE];
+    unsigned char buffer2[BUFFERSIZE];
     
     ifp = fopen(archiveName, "rb");
     if (ifp == NULL) {
@@ -84,7 +85,7 @@ int insideChecking(char** fileNames, int numFiles, char* archiveName) {
         
         fread(&fileSize, sizeof(int), 1, ifp);
         while(1) {
-            record1 = fread(buffer1, sizeof(unsigned char), 1000, ofp);
+            record1 = fread(buffer1, sizeof(unsigned char), BUFFERSIZE, ofp);
             if (record1 == 0) {
                 break;
             }
@@ -116,7 +117,7 @@ void verification(char** fileNames, int numFiles, char* archiveName) {
     int archiveSize;
     
     if (insideChecking(fileNames, numFiles, archiveName) == 1) {
-        printf("Archive verified\n");
+        printf("Archive verified!\n");
         return;
     }
     

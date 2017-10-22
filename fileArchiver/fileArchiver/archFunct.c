@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "archFunct.h"
+#include "constants.h"
 
 void archive (char** fileNames, int numFiles, char* archivename) {
     FILE *ifp;
@@ -10,7 +11,7 @@ void archive (char** fileNames, int numFiles, char* archivename) {
     int fileSize;
     int i;
     int record;
-    unsigned char buffer[1000];
+    unsigned char buffer[BUFFERSIZE];
     
     ofp = fopen(archivename, "wb");
     if (ofp == NULL) {
@@ -36,10 +37,9 @@ void archive (char** fileNames, int numFiles, char* archivename) {
         fwrite(fileNames[i], sizeof(char), fileNameLength, ofp);
         
         fileSize = getSize(fileNames[i]);
-        printf("File size check: %d \n", fileSize);
         fwrite(&fileSize, sizeof(int), 1, ofp);
         
-        while((record = fread(buffer, sizeof(unsigned char), 1000, ifp)) != 0) {
+        while((record = fread(buffer, sizeof(unsigned char), BUFFERSIZE, ifp)) != 0) {
             fwrite(buffer, sizeof(unsigned char), record, ofp);
         }
         
@@ -54,9 +54,9 @@ void unarchive (char* archiveFile) {
     int numberOfFiles;
     int i;
     char fileNameLength;
-    char fileNameBuffer[100];
+    char fileNameBuffer[MAXFILENAME];
     int record;
-    unsigned char buffer[1000];
+    unsigned char buffer[BUFFERSIZE];
     int fileSize;
     
     ifp = fopen(archiveFile, "rb");
@@ -79,7 +79,7 @@ void unarchive (char* archiveFile) {
         
         fread(&fileSize, sizeof(int), 1, ifp);
         
-        while((record = fread(buffer, sizeof(unsigned char), 1000 < fileSize ? 1000 : fileSize, ifp)) != 0) {
+        while((record = fread(buffer, sizeof(unsigned char), BUFFERSIZE < fileSize ? BUFFERSIZE : fileSize, ifp)) != 0) {
             fileSize -= record;
             fwrite(buffer, sizeof(unsigned char), record, ofp);
             if(fileSize == 0) {
