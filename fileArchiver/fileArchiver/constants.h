@@ -1,3 +1,3 @@
 #define BUFFERSIZE 1000
-#define MAXFILENAME 100
+#define MAXFILENAME 255
 #define MINARGC 3
