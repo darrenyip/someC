@@ -1,6 +1,6 @@
 typedef struct Record {
     char *token;
-    char *filename;
+    char *fileName;
     int hits;
 } Record;
 
