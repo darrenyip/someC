@@ -1,5 +1,6 @@
 #include <ctype.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "invertIndex.h"
 
@@ -18,7 +19,6 @@ int myHash(const char *token) {
 
 /* Put passing token into the list */
 int tokenRecord(Index *index, const char *token, const char *fileName) {
-    
     SortedList *list;
     int i;
     
@@ -31,10 +31,21 @@ int tokenRecord(Index *index, const char *token, const char *fileName) {
     else {
         list = index->lists[i];
         if (list == NULL) {
-            index->lists[i] = createSortedList(recCompare);
+            index->lists[i] = newSortedList(recCompare);
         }
-        
         return insertToList(index->lists[i], token, fileName);
     }
     
+}
+
+Index *newIndex() {
+    return (Index *) malloc(sizeof(struct Index));
+}
+
+void freeIndex(Index *index) {
+    int i;
+    for (i = 0; i < 50; i++) {
+        freeSortedList(index->lists[i]);
+    }
+    free(index);
 }

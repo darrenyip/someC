@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "Record.h"
 
@@ -19,7 +20,7 @@ Record *newRecord(const char *token, const char *fileName, int hits) {
     if (record) {
         record->token = (char *) malloc(strlen(token) + 1);
         record->fileName = (char *) malloc(strlen(fileName) + 1);
-        if (!record->token || record->fileName) {
+        if (!record->token || !record->fileName) {
             free(record);
         }
         else {

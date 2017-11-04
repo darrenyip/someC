@@ -10,3 +10,5 @@ int validDir(const char *);
 int validFile(const char *);
 
 void indexFile(Browser *, const char*);
+
+Browser *newBrowser();
