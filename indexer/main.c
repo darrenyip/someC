@@ -1,7 +1,3 @@
-/* Leader: Weicheng Ji */
-/* Coder: Zuoli Zhu */
-/* Testing and Error Handling: Michael Krill */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
