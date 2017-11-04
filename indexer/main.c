@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <ftw.h>
 
-#include "list.h"
+#include "browses.h"
 
 #define PATHNAME 250
 
@@ -17,6 +17,7 @@ int main (int argc, char *argv[]) {
     DIR *dirptr;
     struct dirent *dp;
     char dirName[PATHNAME];
+    Browser *browser;
     
     if (argc == 1) {
         printf("CWD:\n");
@@ -25,21 +26,27 @@ int main (int argc, char *argv[]) {
             exit(1);
         }
         printf("You are in : %s\n", dirName);
-        ftw(".", list, 1);
         exit(1);
     }
-    // else if (argc == 2) {
-    //     printf("1 Argument");
-    //     exit(1);
-    // }
     
     else if (argc == 3) {
-        printf("Pointed dir: %s\n", argv[2]);
-        ftw(argv[2], list, 1);
+        
+        if (validFile(argv[2])) {
+            printf("\nvalid!\n");
+            indexFile(browser ,argv[2]);
+        }
+        else if (validDir(argv[2])) {
+            printf("\nvalid!\n");
+        }
+        else {
+            fprintf(stderr, "Error: [%s] is not a valid file or directory.\n", argv[2]);
+        }
     }
     
     else {
         fprintf(stderr, "Invalid cmd argument input!\n");
         exit(1);
     }
+    
+    
 }
