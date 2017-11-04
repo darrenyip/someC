@@ -1,10 +1,5 @@
-CC = gcc
-CFLAGS = -g
-OBJECTS = main.o creates.o browses.o invertIndex.o mystrtok.o Record.o sortedList.o
-
-
-indexer: $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o indexer
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $<
+target:indexer
+indexer:
+	cc browses.c creates.c invertIndex.c main.c mystrtok.c Record.c sortedList.c -o indexer
+clean:
+	rm indexer
