@@ -31,6 +31,7 @@ int validFile(const char *filename) {
     }
 }
 
+/* Generate a new Browser */
 Browser *newBrowser() {
     Browser *browser = (Browser *)malloc(sizeof(struct Browser));
     if(browser) {
@@ -45,6 +46,7 @@ Browser *newBrowser() {
     return NULL;
 }
 
+/* Free memory of Browser */
 void freeBrowser(Browser *browser) {
     if (browser) {
         freeIndex(browser->index);
@@ -60,6 +62,7 @@ void indexFile(Browser *browser, const char *fileName) {
     char *token;
     
     fp = fopen(fileName, "r");
+    /* If file doesn't excist */
     if(!fp) {
         fprintf(stderr, "Unable to open [%s] for reading", fileName);
     }

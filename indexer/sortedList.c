@@ -3,6 +3,7 @@
 
 #include "sortedList.h"
 
+/* Generate a new list for storing */
 SortedList *newSortedList(CompareFunction cf) {
     SortedList *list = (SortedList *) malloc(sizeof(struct SortedList));
     if (list) {
@@ -51,7 +52,9 @@ void freeIterator(ListIterator *it) {
     free(it);
 }
 
+/* Probably the most complicated method of the whole program. */
 /* Insertion method that add the record into the linkedlist. Return 1 if successful. */
+/* Including insert at head, insert at middle and insert at the end of the list. */
 int insertToList(SortedList *list, const char *token, const char *fileName) {
     Node *brandnewNode, *ptr, *prev;
     Record *record, *temp;
@@ -147,14 +150,7 @@ int insertToList(SortedList *list, const char *token, const char *fileName) {
     return status;
 } /* End of insertion */
 
-
-
-
-
-
-
-
-/* Return the next record in the iterator */
+/* Return the next record in the iterator. */
 Record *hasNext(ListIterator *it) {
     if (!it || !it->ptr) {
         return NULL;
@@ -174,7 +170,7 @@ Record *hasNext(ListIterator *it) {
     return data;
 }
 
-/**/
+/* Free memory after use. */
 void freeSortedList(SortedList *list) {
     if (list) {
         Node *ptr = list->head;

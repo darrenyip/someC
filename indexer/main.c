@@ -3,9 +3,9 @@
 #include <string.h>
 #include <dirent.h>
 #include <unistd.h>
-#include <ftw.h>
 
 #include "browses.h"
+
 
 #define PATHNAME 250
 #define MAXFILENAME 100
@@ -78,4 +78,6 @@ int main (int argc, char *argv[]) {
     else {
         printf("Nothing output.\n");
     }
+    freeBrowser(browser);
+    fclose(fp);
 }

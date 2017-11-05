@@ -38,10 +38,12 @@ int tokenRecord(Index *index, const char *token, const char *fileName) {
     
 }
 
+/* Generate pointer to a new inverted index */
 Index *newIndex() {
     return (Index *) malloc(sizeof(struct Index));
 }
 
+/* Free memory of index object */
 void freeIndex(Index *index) {
     int i;
     for (i = 0; i < 50; i++) {

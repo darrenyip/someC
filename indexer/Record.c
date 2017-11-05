@@ -4,6 +4,7 @@
 
 #include "Record.h"
 
+/* Compares the words of a record */
 int recCompare(Record *rec1, Record *rec2) {
     int result;
     Record *r1 = (Record *) rec1;
@@ -13,7 +14,7 @@ int recCompare(Record *rec1, Record *rec2) {
     return result == 0 ? strcmp(r1->fileName, r2->fileName) : result;
 }
 
-/* Creates a new record. Returns a pointer to the new object */
+/* Generate a new record. Returns a pointer to the new object */
 Record *newRecord(const char *token, const char *fileName, int hits) {
     Record *record = (Record *) malloc(sizeof(struct Record));
     

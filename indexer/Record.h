@@ -4,6 +4,8 @@ typedef struct Record {
     int hits;
 } Record;
 
+/* Compares the words of a record */
 int recCompare(Record *, Record *);
 
+/* Generate a new record */
 Record *newRecord(const char *, const char *, int);
